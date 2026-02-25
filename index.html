@@ -1,1 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory — Where Inventors Connect | PolyPall</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050810;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --accent: #00e5ff;
+      --accent2: #ff4d6d;
+      --gold: #f0b429;
+      --text: #e8eaf0;
+      --muted: #7a8394;
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://i.postimg.cc/J4kbZbfm/bg.png') center/cover no-repeat;
+      z-index: 0;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(5,8,16,0.55) 0%,
+        rgba(5,8,16,0.35) 40%,
+        rgba(5,8,16,0.85) 80%,
+        var(--bg) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: 860px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.35rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 12vw, 9rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.4s forwards;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(232,234,240,0.75);
+      font-weight: 300;
+      max-width: 600px;
+      margin: 1.5rem auto 2.5rem;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.6s forwards;
+    }
+
+    .cta-group {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.8s forwards;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 24px rgba(0,229,255,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(0,229,255,0.55);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    h2.section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── MANIFESTO ── */
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media(max-width:700px){ .manifesto-grid { grid-template-columns: 1fr; } }
+
+    .manifesto-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(232,234,240,0.8);
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-top: 1rem;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .feature-list li::before {
+      content: '→';
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── SIGNUP CALLOUT ── */
+    .signup-callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      padding: 3rem;
+      text-align: center;
+      border-radius: 4px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .signup-callout h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 0.75rem;
+    }
+    .signup-callout p {
+      color: rgba(232,234,240,0.7);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── MOCKUP ── */
+    .mockup-img {
+      width: 100%;
+      max-width: 700px;
+      display: block;
+      margin: 2.5rem auto 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 80px rgba(0,229,255,0.08);
+    }
+
+    /* ── TEASER LINK ── */
+    .teaser-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 1.5rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .teaser-card:hover {
+      background: rgba(240,180,41,0.06);
+      border-left-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .teaser-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .teaser-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+    }
+    .teaser-card-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .teaser-arrow {
+      font-size: 1.5rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── MOCKUP GALLERY ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .gallery-grid img {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: block;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+    }
+    .gallery-grid img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 40px rgba(0,229,255,0.12);
+    }
+
+    /* ── VIDEO SECTION ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .video-placeholder {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      aspect-ratio: 16/9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      transition: border-color 0.2s;
+    }
+    .video-placeholder:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .play-icon {
+      width: 44px; height: 44px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    /* ── MISSION ── */
+    .mission-text {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: rgba(232,234,240,0.8);
+      max-width: 680px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="badge">Coming Soon · Early Access Open</div>
+      <h1>INVEN<span>TORY</span></h1>
+      <p class="hero-sub">
+        You spend nights sketching circuits, coding breakthroughs, prototyping the impossible.
+        Now there's a place built just for you — where inventors find their team.
+      </p>
+      <div class="cta-group">
+        <a href="#signup" class="btn btn-primary">Secure Your Spot</a>
+        <a href="#product" class="btn btn-ghost">Learn More</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── MANIFESTO ── -->
+  <section class="reveal">
+    <div class="section-label">Why Inventory</div>
+    <h2 class="section-title">No Noise.<br>Just Real Tech Minds.</h2>
+    <div class="manifesto-grid">
+      <div class="manifesto-text">
+        <p>
+          You're an inventor at heart. A creator. A problem-solver driven by pure STEM passion —
+          robotics, AI, CAD, machine learning, and beyond. But building alone slows momentum.
+        </p>
+        <p>
+          Inventory is a focused social space designed for serious makers. Define your identity,
+          showcase your projects, and connect with others who live for innovation.
+          Real creativity. Real potential. Real community.
+        </p>
+      </div>
+      <ul class="feature-list">
+        <li>Serious builders &amp; technical collaborators</li>
+        <li>Portfolio visibility for your best work</li>
+        <li>Startup formation &amp; team discovery</li>
+        <li>Investor discovery &amp; funding paths</li>
+        <li>Robotics · Software · ML · CAD · IT · Emerging Tech</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SIGNUP ── -->
+  <section id="signup" class="reveal" style="padding-top:4rem;padding-bottom:4rem;">
+    <div class="signup-callout">
+      <div class="section-label">Early Access</div>
+      <h3>Secure Your Inventor Spot Today</h3>
+      <p>
+        We're inviting makers to sign up before launch to show interest in early access.
+        Be among the first to join — your future starts here.
+      </p>
+      <!-- REPLACE href WITH YOUR GOOGLE SHEET / TALLY SIGN-UP LINK -->
+      <a href="YOUR_SIGNUP_LINK_HERE" target="_blank" class="btn btn-primary">Join the Waitlist →</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── PRODUCT ── -->
+  <section id="product" class="reveal">
+    <div class="section-label">Product Ecosystem · PolyPall</div>
+    <h2 class="section-title">Inventory App</h2>
+    <p style="max-width:620px;line-height:1.8;color:rgba(232,234,240,0.75);font-size:1.05rem;">
+      A networking platform where creative individuals can show off their talent,
+      connect with other makers, collaborate, share ideas, and even get tipped for their work.
+    </p>
+
+    <!-- Platform mockup -->
+    <img
+      class="mockup-img"
+      src="https://i.postimg.cc/BQ3kvzTJ/Copy_of_log_in_sign_up.png"
+      alt="Inventory App — Login / Sign Up Screen Mockup"
+    />
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── STATIC TEASER ── -->
+  <section class="reveal" style="padding-top:4rem;padding-bottom:4rem;">
+    <div class="section-label">Live Preview</div>
+    <h2 class="section-title" style="margin-bottom:2rem;">See It In Action</h2>
+    <a
+      href="https://polypall.github.io/InventoryTCTeaser/"
+      target="_blank"
+      class="teaser-card"
+    >
+      <div>
+        <div class="teaser-card-label">Static Site Teaser · Inventory</div>
+        <div class="teaser-card-title">Inventory App Teaser</div>
+        <div class="teaser-card-sub">The site for inventors &amp; investors</div>
+      </div>
+      <div class="teaser-arrow">↗</div>
+    </a>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── GALLERY ── -->
+  <section class="reveal">
+    <div class="section-label">Mockup Photos</div>
+    <h2 class="section-title">Platform Previews</h2>
+    <div class="gallery-grid">
+      <img src="https://i.postimg.cc/pTRJwrPc/Copy_of_Untitled_Design.png" alt="Mockup 1" loading="lazy" />
+      <img src="https://i.postimg.cc/jjVXhvm0/Copy_of_Untitled_Design_(1).png" alt="Mockup 2" loading="lazy" />
+      <img src="https://i.postimg.cc/rmFbJRp8/5)-Home-page.png" alt="Mockup 3 — Home Page" loading="lazy" />
+      <img src="https://i.postimg.cc/6Q7z5VTM/IMG-20260223-190615922.jpg" alt="Mockup 4" loading="lazy" />
+      <img src="https://i.postimg.cc/xjG5C1js/IMG-20260223-190626700.jpg" alt="Mockup 5" loading="lazy" />
+      <img src="https://i.postimg.cc/3JKBDQdX/IMG-20260223-190641293.jpg" alt="Mockup 6" loading="lazy" />
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── VIDEOS ── -->
+  <section class="reveal">
+    <div class="section-label">Videos</div>
+    <h2 class="section-title">App Functionalities</h2>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0.5rem;">
+      Unlisted YouTube videos coming soon — replace the placeholder links below with your video URLs.
+    </p>
+    <div class="video-grid">
+      <!-- REPLACE href="YOUR_VIDEO_LINK_X" WITH YOUTUBE EMBED OR LINK -->
+      <a href="YOUR_VIDEO_LINK_1" target="_blank" style="text-decoration:none;">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <span>Video 01 · Replace Link</span>
+        </div>
+      </a>
+      <a href="YOUR_VIDEO_LINK_2" target="_blank" style="text-decoration:none;">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <span>Video 02 · Replace Link</span>
+        </div>
+      </a>
+      <a href="YOUR_VIDEO_LINK_3" target="_blank" style="text-decoration:none;">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <span>Video 03 · Replace Link</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── MISSION ── -->
+  <section class="reveal">
+    <div class="section-label">About PolyPall</div>
+    <h2 class="section-title">Our Mission</h2>
+    <p class="mission-text">
+      PolyPall is a software company dedicated to improving the human condition and
+      connecting people with common interests globally. We are building a new kind of
+      social platform community.
+    </p>
+    <p class="mission-text" style="margin-top:1.2rem;">
+      PolyPall's main focus is connecting the world and improving the human condition
+      by bringing like-minded people together — one click at a time.
+    </p>
+    <a href="#signup" class="btn btn-primary" style="margin-top:2.5rem;display:inline-block;">
+      Get Early Access →
+    </a>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>© 2026 <span>PolyPall</span> · All rights reserved · Inventory is launching soon</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
