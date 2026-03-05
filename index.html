@@ -19,7 +19,6 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -29,18 +28,92 @@
       overflow-x: hidden;
     }
 
+    /* ── STICKY NAV BAR ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 2.5rem;
+      background: rgba(5,8,16,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .topbar-logo span { color: var(--accent); }
+    .topbar-cta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .topbar-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    @media(max-width:520px){ .topbar-badge { display:none; } }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 24px rgba(0,229,255,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(0,229,255,0.55);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .btn-lg {
+      padding: 1rem 2.8rem;
+      font-size: 1rem;
+    }
+
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
+      padding-top: 72px; /* offset for topbar */
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
     }
-
     .hero-bg {
       position: absolute; inset: 0;
       background: url('https://i.postimg.cc/J4kbZbfm/bg.png') center/cover no-repeat;
@@ -51,13 +124,12 @@
       position: absolute; inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(5,8,16,0.55) 0%,
-        rgba(5,8,16,0.35) 40%,
-        rgba(5,8,16,0.85) 80%,
+        rgba(5,8,16,0.6) 0%,
+        rgba(5,8,16,0.3) 35%,
+        rgba(5,8,16,0.88) 80%,
         var(--bg) 100%
       );
     }
-
     .hero-content {
       position: relative; z-index: 1;
       max-width: 860px;
@@ -86,59 +158,52 @@
       opacity: 0;
       animation: fadeUp 0.9s ease 0.4s forwards;
     }
-
     .hero h1 span { color: var(--accent); }
 
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.2rem);
-      color: rgba(232,234,240,0.75);
+      color: rgba(232,234,240,0.78);
       font-weight: 300;
-      max-width: 600px;
-      margin: 1.5rem auto 2.5rem;
-      line-height: 1.7;
+      max-width: 620px;
+      margin: 1.5rem auto 0;
+      line-height: 1.75;
       opacity: 0;
       animation: fadeUp 0.9s ease 0.6s forwards;
     }
 
-    .cta-group {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    /* ── INLINE WAITLIST FORM ── */
+    .hero-waitlist {
+      margin-top: 2.5rem;
       opacity: 0;
       animation: fadeUp 0.9s ease 0.8s forwards;
     }
-
-    .btn {
-      display: inline-block;
-      padding: 0.9rem 2.2rem;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 3px;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
-      box-shadow: 0 0 24px rgba(0,229,255,0.35);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 40px rgba(0,229,255,0.55);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
+    .waitlist-box {
+      background: rgba(5,8,16,0.7);
       border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      border-radius: 6px;
+      padding: 2rem 2.5rem;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
     }
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
+    .waitlist-box h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .waitlist-box p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .waitlist-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .scroll-hint {
@@ -150,7 +215,7 @@
       letter-spacing: 0.12em;
       color: var(--muted);
       opacity: 0;
-      animation: fadeUp 1s ease 1.2s forwards;
+      animation: fadeUp 1s ease 1.3s forwards;
     }
     .scroll-line {
       width: 1px; height: 40px;
@@ -164,7 +229,6 @@
       margin: 0 auto;
       padding: 5rem 2rem;
     }
-
     .section-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.68rem;
@@ -173,18 +237,44 @@
       color: var(--accent);
       margin-bottom: 1rem;
     }
-
     h2.section-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2.5rem, 6vw, 4.5rem);
       line-height: 1;
       margin-bottom: 1.5rem;
     }
-
     .divider {
       border: none;
       border-top: 1px solid var(--border);
       margin: 0;
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    @media(max-width:600px){ .stats-row { grid-template-columns: 1fr; } }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom: 2px solid var(--accent);
+      padding: 1.5rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
     }
 
     /* ── MANIFESTO ── */
@@ -195,14 +285,12 @@
       align-items: start;
     }
     @media(max-width:700px){ .manifesto-grid { grid-template-columns: 1fr; } }
-
     .manifesto-text p {
       font-size: 1.05rem;
-      line-height: 1.8;
+      line-height: 1.85;
       color: rgba(232,234,240,0.8);
       margin-bottom: 1.2rem;
     }
-
     .feature-list {
       list-style: none;
       display: flex;
@@ -212,39 +300,52 @@
     }
     .feature-list li {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.75rem;
       font-size: 1rem;
       color: var(--text);
+      line-height: 1.5;
     }
     .feature-list li::before {
       content: '→';
       font-family: 'JetBrains Mono', monospace;
       color: var(--accent);
       flex-shrink: 0;
+      margin-top: 2px;
     }
 
-    /* ── SIGNUP CALLOUT ── */
-    .signup-callout {
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    .step-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-top: 2px solid var(--accent);
-      padding: 3rem;
-      text-align: center;
+      padding: 1.8rem;
       border-radius: 4px;
-      max-width: 700px;
-      margin: 0 auto;
+      position: relative;
     }
-    .signup-callout h3 {
+    .step-num {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 0.75rem;
+      font-size: 3.5rem;
+      color: rgba(0,229,255,0.12);
+      line-height: 1;
+      position: absolute;
+      top: 0.75rem; right: 1rem;
     }
-    .signup-callout p {
-      color: rgba(232,234,240,0.7);
-      margin-bottom: 2rem;
-      font-size: 1rem;
+    .step-card h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
+    .step-card p {
+      font-size: 0.9rem;
       line-height: 1.7;
+      color: var(--muted);
     }
 
     /* ── MOCKUP ── */
@@ -258,7 +359,7 @@
       box-shadow: 0 20px 80px rgba(0,229,255,0.08);
     }
 
-    /* ── TEASER LINK ── */
+    /* ── TEASER CARD ── */
     .teaser-card {
       display: flex;
       align-items: center;
@@ -303,7 +404,7 @@
       flex-shrink: 0;
     }
 
-    /* ── MOCKUP GALLERY ── */
+    /* ── GALLERY ── */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -324,7 +425,7 @@
       box-shadow: 0 12px 40px rgba(0,229,255,0.12);
     }
 
-    /* ── VIDEO SECTION ── */
+    /* ── VIDEOS ── */
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -345,7 +446,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.7rem;
       letter-spacing: 0.08em;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, color 0.2s;
     }
     .video-placeholder:hover {
       border-color: var(--accent);
@@ -365,6 +466,29 @@
       line-height: 1.85;
       color: rgba(232,234,240,0.8);
       max-width: 680px;
+    }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta {
+      background: linear-gradient(135deg, rgba(0,229,255,0.06) 0%, rgba(5,8,16,0) 60%);
+      border: 1px solid rgba(0,229,255,0.15);
+      border-radius: 8px;
+      padding: 4rem 2.5rem;
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .bottom-cta h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      margin-bottom: 1rem;
+    }
+    .bottom-cta p {
+      color: rgba(232,234,240,0.7);
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 540px;
+      margin: 0 auto 2rem;
     }
 
     /* ── FOOTER ── */
@@ -388,7 +512,6 @@
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
     }
-
     .reveal {
       opacity: 0;
       transform: translateY(30px);
@@ -402,19 +525,36 @@
 </head>
 <body>
 
+  <!-- ── STICKY TOPBAR ── -->
+  <nav class="topbar">
+    <a href="#" class="topbar-logo">INVEN<span>TORY</span></a>
+    <div class="topbar-cta">
+      <span class="topbar-badge">Early Access Open</span>
+      <a href="https://tally.so/r/7RdbLA" target="_blank" class="btn btn-primary">Join Waitlist →</a>
+    </div>
+  </nav>
+
   <!-- ── HERO ── -->
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <div class="badge">Coming Soon · Early Access Open</div>
+      <div class="badge">Now Accepting Early Members · PolyPall</div>
       <h1>INVEN<span>TORY</span></h1>
       <p class="hero-sub">
-        You spend nights sketching circuits, coding breakthroughs, prototyping the impossible.
-        Now there's a place built just for you — where inventors find their team.
+        The professional community built for inventors. Share your expertise, discover collaborators,
+        and grow alongside the most driven technical minds in the world.
       </p>
-      <div class="cta-group">
-        <a href="#signup" class="btn btn-primary">Secure Your Spot</a>
-        <a href="#product" class="btn btn-ghost">Learn More</a>
+
+      <!-- WAITLIST FORM — TOP OF PAGE -->
+      <div class="hero-waitlist">
+        <div class="waitlist-box">
+          <h3>Claim Your Early Access Spot</h3>
+          <p>Be among the founding members shaping the future of invention. Limited early access available — secure your place today.</p>
+          <div class="waitlist-actions">
+            <a href="https://tally.so/r/7RdbLA" target="_blank" class="btn btn-primary btn-lg">Join the Waitlist →</a>
+            <a href="#product" class="btn btn-ghost btn-lg">See the Platform</a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="scroll-hint">
@@ -425,45 +565,77 @@
 
   <hr class="divider">
 
-  <!-- ── MANIFESTO ── -->
+  <!-- ── WHY INVENTORY ── -->
   <section class="reveal">
     <div class="section-label">Why Inventory</div>
-    <h2 class="section-title">No Noise.<br>Just Real Tech Minds.</h2>
+    <h2 class="section-title">Built for the<br>Builder in You.</h2>
     <div class="manifesto-grid">
       <div class="manifesto-text">
         <p>
-          You're an inventor at heart. A creator. A problem-solver driven by pure STEM passion —
-          robotics, AI, CAD, machine learning, and beyond. But building alone slows momentum.
+          Invention rarely happens in isolation — it happens when the right people find each other.
+          Inventory is the dedicated professional community where engineers, makers, researchers,
+          and technical founders connect around shared ambition.
         </p>
         <p>
-          Inventory is a focused social space designed for serious makers. Define your identity,
-          showcase your projects, and connect with others who live for innovation.
-          Real creativity. Real potential. Real community.
+          Whether you're deep in robotics, machine learning, CAD design, or embedded systems,
+          Inventory gives your work a permanent home and puts you in front of the collaborators,
+          mentors, and investors looking for exactly what you build.
         </p>
       </div>
       <ul class="feature-list">
-        <li>Serious builders &amp; technical collaborators</li>
-        <li>Portfolio visibility for your best work</li>
-        <li>Startup formation &amp; team discovery</li>
-        <li>Investor discovery &amp; funding paths</li>
-        <li>Robotics · Software · ML · CAD · IT · Emerging Tech</li>
+        <li>A focused community of serious technical builders across every STEM discipline</li>
+        <li>Showcase your projects and establish your reputation as an inventor</li>
+        <li>Exchange insights, techniques, and tips with peers who speak your language</li>
+        <li>Discover co-founders and collaborators aligned with your vision</li>
+        <li>Get discovered by investors and accelerators seeking breakthrough talent</li>
+        <li>Earn recognition — and tips — for the knowledge you share</li>
       </ul>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">STEM</div>
+        <div class="stat-label">Robotics · AI · CAD · ML · IT &amp; beyond</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Built exclusively for technical creators</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Connections waiting to be made</div>
+      </div>
     </div>
   </section>
 
   <hr class="divider">
 
-  <!-- ── SIGNUP ── -->
-  <section id="signup" class="reveal" style="padding-top:4rem;padding-bottom:4rem;">
-    <div class="signup-callout">
-      <div class="section-label">Early Access</div>
-      <h3>Secure Your Inventor Spot Today</h3>
-      <p>
-        We're inviting makers to sign up before launch to show interest in early access.
-        Be among the first to join — your future starts here.
-      </p>
-      <!-- REPLACE href WITH YOUR GOOGLE SHEET / TALLY SIGN-UP LINK -->
-      <a href="YOUR_SIGNUP_LINK_HERE" target="_blank" class="btn btn-primary">Join the Waitlist →</a>
+  <!-- ── HOW IT WORKS ── -->
+  <section class="reveal">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Your Platform.<br>Your Expertise.</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h4>Build Your Profile</h4>
+        <p>Define your technical identity. Highlight your disciplines, projects, and the problems you're solving.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h4>Share Your Knowledge</h4>
+        <p>Post tips, tutorials, breakthroughs, and insights. Earn recognition — and tips — from the community you help.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h4>Connect &amp; Collaborate</h4>
+        <p>Find builders whose skills complement yours. Form project teams, start companies, or simply learn from each other.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h4>Get Discovered</h4>
+        <p>Investors and accelerators browse Inventory for emerging talent. Let your work speak — and let the right people find you.</p>
+      </div>
     </div>
   </section>
 
@@ -473,34 +645,29 @@
   <section id="product" class="reveal">
     <div class="section-label">Product Ecosystem · PolyPall</div>
     <h2 class="section-title">Inventory App</h2>
-    <p style="max-width:620px;line-height:1.8;color:rgba(232,234,240,0.75);font-size:1.05rem;">
-      A networking platform where creative individuals can show off their talent,
-      connect with other makers, collaborate, share ideas, and even get tipped for their work.
+    <p style="max-width:640px;line-height:1.85;color:rgba(232,234,240,0.75);font-size:1.05rem;">
+      A professional networking platform where inventors showcase their talent,
+      share expertise, collaborate on meaningful projects, and earn for the value they create.
+      Everything a builder needs — in one focused space.
     </p>
-
-    <!-- Platform mockup -->
     <img
       class="mockup-img"
       src="https://i.postimg.cc/BQ3kvzTJ/Copy_of_log_in_sign_up.png"
-      alt="Inventory App — Login / Sign Up Screen Mockup"
+      alt="Inventory App — Login / Sign Up Screen"
     />
   </section>
 
   <hr class="divider">
 
-  <!-- ── STATIC TEASER ── -->
+  <!-- ── TEASER ── -->
   <section class="reveal" style="padding-top:4rem;padding-bottom:4rem;">
     <div class="section-label">Live Preview</div>
-    <h2 class="section-title" style="margin-bottom:2rem;">See It In Action</h2>
-    <a
-      href="https://polypall.github.io/InventoryTCTeaser/"
-      target="_blank"
-      class="teaser-card"
-    >
+    <h2 class="section-title" style="margin-bottom:2rem;">See It in Action</h2>
+    <a href="https://polypall.github.io/InventoryTCTeaser/" target="_blank" class="teaser-card">
       <div>
         <div class="teaser-card-label">Static Site Teaser · Inventory</div>
         <div class="teaser-card-title">Inventory App Teaser</div>
-        <div class="teaser-card-sub">The site for inventors &amp; investors</div>
+        <div class="teaser-card-sub">Explore the platform built for inventors &amp; investors</div>
       </div>
       <div class="teaser-arrow">↗</div>
     </a>
@@ -526,29 +693,26 @@
 
   <!-- ── VIDEOS ── -->
   <section class="reveal">
-    <div class="section-label">Videos</div>
+    <div class="section-label">Demo Videos</div>
     <h2 class="section-title">App Functionalities</h2>
-    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0.5rem;">
-      Unlisted YouTube videos coming soon — replace the placeholder links below with your video URLs.
-    </p>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0.5rem;">Watch Inventory in motion — see how the platform works for real builders.</p>
     <div class="video-grid">
-      <!-- REPLACE href="YOUR_VIDEO_LINK_X" WITH YOUTUBE EMBED OR LINK -->
       <a href="https://youtube.com/shorts/EtNKw68UsKs?si=tEJq65edZuIJtx3S" target="_blank" style="text-decoration:none;">
         <div class="video-placeholder">
           <div class="play-icon">▶</div>
-          <span>Video 01 · Replace Link</span>
+          <span>Demo · Profiles &amp; Discovery</span>
         </div>
       </a>
       <a href="https://youtube.com/shorts/NMWK9u_oE_g?si=QXgIVOWqGI2GgRq6" target="_blank" style="text-decoration:none;">
         <div class="video-placeholder">
           <div class="play-icon">▶</div>
-          <span>Video 02 · Replace Link</span>
+          <span>Demo · Sharing &amp; Tipping</span>
         </div>
       </a>
       <a href="https://youtu.be/s9sjfIkhkV8?si=TLuxtkqGh67vBPzp" target="_blank" style="text-decoration:none;">
         <div class="video-placeholder">
           <div class="play-icon">▶</div>
-          <span>Video 03 · Replace Link</span>
+          <span>Demo · Collaboration Flow</span>
         </div>
       </a>
     </div>
@@ -561,17 +725,29 @@
     <div class="section-label">About PolyPall</div>
     <h2 class="section-title">Our Mission</h2>
     <p class="mission-text">
-      PolyPall is a software company dedicated to improving the human condition and
-      connecting people with common interests globally. We are building a new kind of
-      social platform community.
+      PolyPall is a software company dedicated to improving the human condition by connecting
+      people with shared passions across the globe. We believe the next generation of
+      breakthrough inventions will come from communities — not isolation.
     </p>
     <p class="mission-text" style="margin-top:1.2rem;">
-      PolyPall's main focus is connecting the world and improving the human condition
-      by bringing like-minded people together — one click at a time.
+      Inventory is our first step toward a world where every serious maker has the community,
+      visibility, and resources to bring their ideas to life. One connection at a time.
     </p>
-    <a href="https://tally.so/r/7RdbLA" class="btn btn-primary" style="margin-top:2.5rem;display:inline-block;">
-      Get Early Access →
-    </a>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── BOTTOM CTA ── -->
+  <section class="reveal" style="padding-top:4rem;padding-bottom:5rem;">
+    <div class="bottom-cta">
+      <div class="section-label">Early Access</div>
+      <h3>Ready to Join the Inventor Community?</h3>
+      <p>
+        Founding members shape the direction of the platform. Secure your place today and
+        be part of building something that changes how the world invents.
+      </p>
+      <a href="https://tally.so/r/7RdbLA" target="_blank" class="btn btn-primary btn-lg">Secure Your Spot on the Waitlist →</a>
+    </div>
   </section>
 
   <!-- ── FOOTER ── -->
@@ -580,7 +756,6 @@
   </footer>
 
   <script>
-    // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -589,7 +764,7 @@
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
   </script>
 </body>
